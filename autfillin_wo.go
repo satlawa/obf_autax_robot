@@ -51,7 +51,6 @@ func main() {
 	for row := df_start; row < df_end+1; row++ {
 
 		//if row%0 == 0.0 {
-		time.Sleep(500 * time.Millisecond)
 		//}
 
 		we := df.Elem(row, 1).String()
@@ -61,6 +60,7 @@ func main() {
 
 			// *** Text ***
 			new_uz()
+			time.Sleep(50 * time.Millisecond)
 			// loop columns 2 to 11
 			for col := 2; col < 11; col++ {
 
@@ -83,10 +83,11 @@ func main() {
         } else if (col == 9) {
           robotgo.KeyTap("tab")
         }
+				time.Sleep(10 * time.Millisecond)
 
 			}
 		}
-
+		time.Sleep(30 * time.Millisecond)
 		// next Waldort
 		next_wo()
 	}

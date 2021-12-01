@@ -78,9 +78,15 @@ func main() {
 		//}
 
 		we := df.Elem(row, 1).String()
+		fmt.Println("------------")
+		fmt.Println(df.Elem(row, 0).String())
+		fmt.Println(row)
 
 		// if WO than fill in data
 		if we == "WO" {
+			fmt.Println("------------")
+			fmt.Println(we)
+			fmt.Println(row)
 
 			// *** Text ***
 			new_text()

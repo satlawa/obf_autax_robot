@@ -8,7 +8,7 @@ version 0.2
 */
 
 import (
-	"bufio"
+	//"bufio"
 	"fmt"
 	"os"
 	"strconv"
@@ -70,6 +70,8 @@ func main() {
 	fmt.Println(df)
 	fmt.Println("working...")
 
+	count := 1
+
 	// loop rows
 	for row := df_start; row < df_end+1; row++ {
 
@@ -82,6 +84,16 @@ func main() {
 			massnahme := df.Elem(row, 4).String()
 			//fmt.Println("Maßnahme" + massnahme)
 			if massnahme != "0" {
+				// print WO
+				fmt.Println(df.Elem(row, 0).String())
+
+				// counter
+				if (count > 10) {
+					count = 1
+				} else {
+					count = count + 1
+				}
+
 				// get number of rows in Schichtmerkmale
 				ro := df.Elem(row, 3).String()
 				rows_schicht, err := strconv.Atoi(ro)
@@ -97,7 +109,9 @@ func main() {
 
 				fmt.Println(row, massnahme)
 
-				new_nutz(rows_schicht, rows_bz)
+				new_nutz(rows_schicht, rows_bz, count)
+
+				time.Sleep(100 * time.Millisecond)
 				// loop columns 2 to 10 (Maßnahmenzeile)
 				for col := 4; col < 15; col++ {
 
@@ -109,6 +123,8 @@ func main() {
 						elem = strings.Replace(elem, ".", ",", 1)
 					} else if (col == 14) && (elem == "0") {
 						elem = ""
+					} else if (col == 4) {
+						elem = "1"
 					}
 					//fmt.Println("Element: ", elem)
 
@@ -116,7 +132,7 @@ func main() {
 					//robotgo.KeyTap("tab")
 					robotgo.TypeStr(elem)
 					robotgo.KeyTap("tab")
-					time.Sleep(1 / 2 * time.Second)
+					time.Sleep(30 * time.Millisecond)
 				}
 			}
 		}
@@ -156,7 +172,7 @@ func new_wtyp() {
 }
 
 // make new Nutzung
-func new_nutz(rows int, rows_bz int) {
+func new_nutz(rows int, rows_bz int, n int) {
 
 	fmt.Println("Nutzung: ", rows, rows_bz)
 	// call offset function
@@ -165,19 +181,23 @@ func new_nutz(rows int, rows_bz int) {
 	coord := 558 + add + 24*(rows-1) // 575
 	// move mouse to
 	robotgo.MoveMouse(221, 500+add) // 222, 506
-	time.Sleep(1 / 2 * time.Second)
+	time.Sleep(100 * time.Millisecond)
 	//one left click
 	robotgo.Click()
 
-	time.Sleep(1 / 2 * time.Second)
+	time.Sleep(100 * time.Millisecond)
 	fmt.Println("Nutzung ende: ", coord)
 	// move mouse to
 	robotgo.MoveMouse(224, coord)
-	// waiting for "enter" input
-	bufio.NewReader(os.Stdin).ReadBytes('\n')
+
+	//if (n == 10) {
+		// waiting for "enter" input
+		//bufio.NewReader(os.Stdin).ReadBytes('\n')
+	//}
+
 	//one left click
 	robotgo.Click()
-	time.Sleep(1 / 2 * time.Second)
+	time.Sleep(100 * time.Millisecond)
 }
 
 // delete old Nutzung

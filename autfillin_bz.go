@@ -136,18 +136,20 @@ func main() {
 	for row := df_start; row < df_end+1; row++ {
 
 		//if row%10 == 0.0 {
-		//	time.Sleep(0.1 * time.Second)
 		//}
 
 		we := df.Elem(row, 1).String()
 
 		// if WO than fill in data
 		if we == "WO" {
-
+			fmt.Println("------------")
+			fmt.Println(we)
+			fmt.Println(row)
 			// *** Bestockungsziel ***
 			//fmt.Println("Bestockungsziel")
 			// delete old
 			delete_bz()
+			time.Sleep(25 * time.Millisecond)
 			// loop though columns 11 to 19 (BA-Bestockungsziele)
 			for col := 2; col < 76; col++ {
 				// get elemet
@@ -157,11 +159,12 @@ func main() {
 					elem_ba := map_ba[col]
 					// insert nutz field and fill in data
 					new_bz()
+					time.Sleep(50 * time.Millisecond)
 					fill_bz(elem_ba, elem)
 				}
 			}
 			robotgo.KeyTap("enter")
-			time.Sleep(1 / 500 * time.Second)
+			time.Sleep(50 * time.Millisecond)
 		}
 
 		// next Waldort
@@ -261,6 +264,7 @@ func fill_bz(ba_art string, ba_anteil string) {
 	robotgo.TypeStr(ba_art)
 	robotgo.KeyTap("tab")
 	robotgo.TypeStr(ba_anteil)
+	time.Sleep(1 / 10 * time.Second)
 }
 
 func new_text() {
